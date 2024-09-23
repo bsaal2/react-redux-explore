@@ -1,11 +1,4 @@
-interface IAction {
-    type: string;
-    payload?: object;
-}
-
-interface IMinusReducer {
-    minusCount: number;
-}
+import { IAction, IMinusReducer } from './index.ts';
 
 const state: IMinusReducer = {
     minusCount: 0

@@ -1,9 +1,6 @@
-interface IAction {
-    type: string;
-    payload?: object;
-}
+import type { IAction, IAddReducer } from './index.ts';
 
-const state = {
+const state: IAddReducer = {
     addCount: 0
 };
 
