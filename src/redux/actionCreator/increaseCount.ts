@@ -1,9 +1,10 @@
 import { Dispatch } from 'redux';
 import { increaseCountInitiate, increaseCount } from '../action/countAction.ts';
-import { IAction } from '../reducer';
+import {IAction, IAddReducer, IMinusReducer} from '../reducer';
 
 const increaseCountActionCreator = () => {
-    return (dispatch: Dispatch<IAction>) => {
+    return (dispatch: Dispatch<IAction>, getState: { add: IAddReducer, minus: IMinusReducer }, extraPayload: { name: string }) => {
+        console.log('Extra arguments', extraPayload, getState);
         dispatch(increaseCountInitiate());
 
         setTimeout(() => {
