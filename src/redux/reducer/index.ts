@@ -4,10 +4,12 @@ interface IAction {
 }
 
 interface IAddReducer {
+    loading: boolean;
     addCount: number;
 }
 
 interface IMinusReducer {
+    loading: boolean;
     minusCount: number;
 }
 
