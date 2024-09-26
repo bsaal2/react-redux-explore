@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import store from './redux/store.ts';
-import { increaseCountInitiate, decreaseCountInitiate } from './redux/action/countAction.ts';
+import increaseCountActionCreator from './redux/actionCreator/increaseCount.ts';
+import decreaseCountActionCreator from './redux/actionCreator/decreaseCount.ts'
+
 
 const Loading = () => (
     <span>Loading...</span>
@@ -14,11 +16,11 @@ function App() {
     const minusLoading = minusObj?.loading;
 
   const onIncreaseHandler = () => {
-      store.dispatch(increaseCountInitiate());
+      store.dispatch(increaseCountActionCreator());
   }
 
   const onDecreaseHandler = () => {
-      store.dispatch(decreaseCountInitiate());
+      store.dispatch(decreaseCountActionCreator());
   }
 
     useEffect(() => {
