@@ -1,24 +1,29 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { FC } from 'react';
+import { connect } from 'react-redux';
 import { IState } from './redux/store.ts';
 import increaseCountActionCreator from './redux/actionCreator/increaseCount.ts';
 import decreaseCountActionCreator from './redux/actionCreator/decreaseCount.ts'
+import { IAddReducer, IMinusReducer } from './redux/reducer';
 
 import Loading from './components/Loading.tsx';
 
-function App() {
-    const dispatch = useDispatch();
-    const addObj = useSelector((state: IState) => state.add);
-    const minusObj = useSelector((state: IState) => state.minus);
+interface IAppProps {
+    addObj: IAddReducer,
+    minusObj: IMinusReducer
+    increaseCountActionCreator: Function;
+    decreaseCountActionCreator: Function;
+}
 
+const App: FC<IAppProps> = ({ addObj, minusObj, increaseCountActionCreator, decreaseCountActionCreator }) => {
     const addLoading = addObj?.loading;
     const minusLoading = minusObj?.loading;
 
   const onIncreaseHandler = () => {
-      dispatch(increaseCountActionCreator() as any);
+      increaseCountActionCreator();
   }
 
   const onDecreaseHandler = () => {
-      dispatch(decreaseCountActionCreator() as any);
+      decreaseCountActionCreator();
   }
     //     const unsubscribe = store.subscribe(() => {
     //         console.log('entered');
@@ -50,4 +55,10 @@ function App() {
   )
 }
 
-export default App
+const mapStateToProps = (state: IState) => ({ addObj: state.add, minusObj: state.minus });
+const mapDispatchToProps = {
+    increaseCountActionCreator,
+    decreaseCountActionCreator
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
