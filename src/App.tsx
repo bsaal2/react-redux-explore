@@ -1,54 +1,52 @@
-import { useState, useEffect } from 'react';
-import store from './redux/store.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import { IState } from './redux/store.ts';
 import increaseCountActionCreator from './redux/actionCreator/increaseCount.ts';
 import decreaseCountActionCreator from './redux/actionCreator/decreaseCount.ts'
 
-
-const Loading = () => (
-    <span>Loading...</span>
-)
+import Loading from './components/Loading.tsx';
 
 function App() {
-    const [addObj, setAddObj] = useState(store.getState().add);
-    const [minusObj, setMinusObj] = useState(store.getState().minus);
+    const dispatch = useDispatch();
+    const addObj = useSelector((state: IState) => state.add);
+    const minusObj = useSelector((state: IState) => state.minus);
 
     const addLoading = addObj?.loading;
     const minusLoading = minusObj?.loading;
 
   const onIncreaseHandler = () => {
-      store.dispatch(increaseCountActionCreator());
+      dispatch(increaseCountActionCreator() as any);
   }
 
   const onDecreaseHandler = () => {
-      store.dispatch(decreaseCountActionCreator());
+      dispatch(decreaseCountActionCreator() as any);
   }
+    //     const unsubscribe = store.subscribe(() => {
+    //         console.log('entered');
+    //         setAddObj(store.getState().add);
+    //         setMinusObj(store.getState().minus);
+    //     });
 
-    useEffect(() => {
-        const unsubscribe = store.subscribe(() => {
-            console.log('entered');
-            setAddObj(store.getState().add);
-            setMinusObj(store.getState().minus);
-        });
-
-        return () => {
-            unsubscribe();
-        };
-    }, []);
+    //     return () => {
+    //         unsubscribe();
+    //     };
+    // }, []);
 
   return (
-    <section id="myCountApp">
-        <p>Add Count:
-            { addLoading && <Loading /> }
-            { !addLoading && <span>{ addObj?.addCount }</span> }
-        </p>
+    
+        <section id="myCountApp">
+            <p>Add Count:
+                { addLoading && <Loading /> }
+                { !addLoading && <span>{ addObj?.addCount }</span> }
+            </p>
 
-        <p>Minus Count:
-            { minusLoading && <Loading /> }
-            { !minusLoading && <span>{ minusObj?.minusCount }</span> }
-        </p>
-        <button onClick={onIncreaseHandler}>Add count</button>
-        <button onClick={onDecreaseHandler}>Decrease count</button>
-    </section>
+            <p>Minus Count:
+                { minusLoading && <Loading /> }
+                { !minusLoading && <span>{ minusObj?.minusCount }</span> }
+            </p>
+            <button onClick={onIncreaseHandler}>Add count</button>
+            <button onClick={onDecreaseHandler}>Decrease count</button>
+        </section>
+   
   )
 }
 

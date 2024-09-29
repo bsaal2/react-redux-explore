@@ -1,16 +1,18 @@
-const increaseCountInitiate = () => ({
+import { IAction } from '../reducer';
+
+const increaseCountInitiate = (): IAction => ({
     type: 'ADD_LOADING'
 })
 
-const increaseCount = () => ({
+const increaseCount = (): IAction => ({
     type: 'ADD'
 });
 
-const decreaseCountInitiate = () => ({
+const decreaseCountInitiate = (): IAction => ({
     type: 'MINUS_LOADING'
 })
 
-const decreaseCount = () => ({
+const decreaseCount = (): IAction => ({
     type: 'MINUS'
 });
 

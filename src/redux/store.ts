@@ -13,6 +13,6 @@ const appReducer = combineReducers({
 
 const store = createStore(appReducer, applyMiddleware(thunk));
 
-export type IStore = typeof Store;
+export type IState = ReturnType<typeof store.getState>;
 
 export default store;
