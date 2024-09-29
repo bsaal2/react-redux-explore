@@ -1,55 +1,64 @@
-import { useState, useEffect } from 'react';
-import store from './redux/store.ts';
+import { FC } from 'react';
+import { connect } from 'react-redux';
+import { IState } from './redux/store.ts';
 import increaseCountActionCreator from './redux/actionCreator/increaseCount.ts';
 import decreaseCountActionCreator from './redux/actionCreator/decreaseCount.ts'
+import { IAddReducer, IMinusReducer } from './redux/reducer';
 
+import Loading from './components/Loading.tsx';
 
-const Loading = () => (
-    <span>Loading...</span>
-)
+interface IAppProps {
+    addObj: IAddReducer,
+    minusObj: IMinusReducer
+    increaseCountActionCreator: Function;
+    decreaseCountActionCreator: Function;
+}
 
-function App() {
-    const [addObj, setAddObj] = useState(store.getState().add);
-    const [minusObj, setMinusObj] = useState(store.getState().minus);
-
+const App: FC<IAppProps> = ({ addObj, minusObj, increaseCountActionCreator, decreaseCountActionCreator }) => {
     const addLoading = addObj?.loading;
     const minusLoading = minusObj?.loading;
 
   const onIncreaseHandler = () => {
-      store.dispatch(increaseCountActionCreator());
+      increaseCountActionCreator();
   }
 
   const onDecreaseHandler = () => {
-      store.dispatch(decreaseCountActionCreator());
+      decreaseCountActionCreator();
   }
+    //     const unsubscribe = store.subscribe(() => {
+    //         console.log('entered');
+    //         setAddObj(store.getState().add);
+    //         setMinusObj(store.getState().minus);
+    //     });
 
-    useEffect(() => {
-        const unsubscribe = store.subscribe(() => {
-            console.log('entered');
-            setAddObj(store.getState().add);
-            setMinusObj(store.getState().minus);
-        });
-
-        return () => {
-            unsubscribe();
-        };
-    }, []);
+    //     return () => {
+    //         unsubscribe();
+    //     };
+    // }, []);
 
   return (
-    <section id="myCountApp">
-        <p>Add Count:
-            { addLoading && <Loading /> }
-            { !addLoading && <span>{ addObj?.addCount }</span> }
-        </p>
+    
+        <section id="myCountApp">
+            <p>Add Count:
+                { addLoading && <Loading /> }
+                { !addLoading && <span>{ addObj?.addCount }</span> }
+            </p>
 
-        <p>Minus Count:
-            { minusLoading && <Loading /> }
-            { !minusLoading && <span>{ minusObj?.minusCount }</span> }
-        </p>
-        <button onClick={onIncreaseHandler}>Add count</button>
-        <button onClick={onDecreaseHandler}>Decrease count</button>
-    </section>
+            <p>Minus Count:
+                { minusLoading && <Loading /> }
+                { !minusLoading && <span>{ minusObj?.minusCount }</span> }
+            </p>
+            <button onClick={onIncreaseHandler}>Add count</button>
+            <button onClick={onDecreaseHandler}>Decrease count</button>
+        </section>
+   
   )
 }
 
-export default App
+const mapStateToProps = (state: IState) => ({ addObj: state.add, minusObj: state.minus });
+const mapDispatchToProps = {
+    increaseCountActionCreator,
+    decreaseCountActionCreator
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
